@@ -35,4 +35,10 @@ app.get("*name", (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+// Global error handler (should be last)
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+});
+
 module.exports = app;

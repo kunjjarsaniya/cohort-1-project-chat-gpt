@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'http://localhost:3000/api';
 
 // Set auth token for requests
 const setAuthToken = (token) => {

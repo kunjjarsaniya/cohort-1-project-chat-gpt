@@ -8,7 +8,7 @@ const router = express.Router();
 // @route   GET api/users/profile
 // @desc    Get user profile
 // @access  Private
-router.get('/profile', auth, userController.getUserProfile);
+router.get('/profile', auth.authUser, userController.getUserProfile);
 
 // @route   PUT api/users/profile
 // @desc    Update user profile
@@ -16,7 +16,7 @@ router.get('/profile', auth, userController.getUserProfile);
 router.put(
   '/profile',
   [
-    auth,
+  auth.authUser,
     [
       check('firstName', 'First name is required').not().isEmpty(),
       check('lastName', 'Last name is required').not().isEmpty(),
