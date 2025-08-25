@@ -1,22 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { io } from "socket.io-client";
 import ChatMobileBar from '../components/chat/ChatMobileBar.jsx';
 import ChatSidebar from '../components/chat/ChatSidebar.jsx';
 import ChatMessages from '../components/chat/ChatMessages.jsx';
 import ChatComposer from '../components/chat/ChatComposer.jsx';
 import '../components/chat/ChatLayout.css';
-import { fakeAIReply } from '../components/chat/aiClient.js';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+
 import {
-  ensureInitialChat,
   startNewChat,
   selectChat,
   setInput,
   sendingStarted,
   sendingFinished,
-  addUserMessage,
-  addAIMessage,
   setChats
 } from '../store/chatSlice.js';
 
@@ -29,7 +26,8 @@ const Home = () => {
   const [ sidebarOpen, setSidebarOpen ] = React.useState(false);
   const [ socket, setSocket ] = useState(null);
 
-  const activeChat = chats.find(c => c.id === activeChatId) || null;
+  // Use server id shape consistently
+  // const activeChat = chats.find(c => c._id === activeChatId) || null;
 
   const [ messages, setMessages ] = useState([
     // {
@@ -48,25 +46,33 @@ const Home = () => {
     if (title) title = title.trim();
     if (!title) return
 
-    const response = await axios.post("https://cohort-1-project-chat-gpt.onrender.com/api/chat", {
-      title
-    }, {
-      withCredentials: true
-    })
-    getMessages(response.data.chat._id);
-    dispatch(startNewChat(response.data.chat));
-    setSidebarOpen(false);
+    try {
+      const response = await axios.post("http://localhost:3000/api/chat", {
+        title
+      }, {
+        withCredentials: true
+      })
+      getMessages(response.data.chat._id);
+      dispatch(startNewChat(response.data.chat));
+      setSidebarOpen(false);
+    } catch (err) {
+      console.error('Failed to create chat', err);
+      alert('Could not create chat. Please try again.');
+    }
   }
 
   // Ensure at least one chat exists initially
   useEffect(() => {
 
-    axios.get("https://cohort-1-project-chat-gpt.onrender.com/api/chat", { withCredentials: true })
+    axios.get("http://localhost:3000/api/chat", { withCredentials: true })
       .then(response => {
         dispatch(setChats(response.data.chats.reverse()));
       })
+      .catch(err => {
+        console.error('Failed to load chats', err);
+      })
 
-    const tempSocket = io("https://cohort-1-project-chat-gpt.onrender.com", {
+    const tempSocket = io("http://localhost:3000", {
       withCredentials: true,
     })
 
@@ -83,7 +89,13 @@ const Home = () => {
 
     setSocket(tempSocket);
 
-  }, []);
+    return () => {
+      try { tempSocket?.disconnect(); } catch (err) {
+        console.warn('Socket disconnect failed', err);
+      }
+    };
+
+  }, [dispatch]);
 
   const sendMessage = async () => {
 
@@ -102,7 +114,7 @@ const Home = () => {
     setMessages(newMessages);
     dispatch(setInput(''));
 
-    socket.emit("ai-message", {
+    socket?.emit("ai-message", {
       chat: activeChatId,
       content: trimmed
     })
@@ -118,16 +130,16 @@ const Home = () => {
   }
 
   const getMessages = async (chatId) => {
-
-   const response = await  axios.get(`https://cohort-1-project-chat-gpt.onrender.com/api/chat/messages/${chatId}`, { withCredentials: true })
-
-   console.log("Fetched messages:", response.data.messages);
-
-   setMessages(response.data.messages.map(m => ({
-     type: m.role === 'user' ? 'user' : 'ai',
-     content: m.content
-   })));
-
+    try {
+      const response = await axios.get(`http://localhost:3000/api/chat/messages/${chatId}`, { withCredentials: true })
+      setMessages(response.data.messages.map(m => ({
+        type: m.role === 'user' ? 'user' : 'ai',
+        content: m.content
+      })));
+    } catch (err) {
+      console.error('Failed to fetch messages', err);
+      setMessages([]);
+    }
   }
 
 
@@ -151,9 +163,9 @@ return (
     <main className="chat-main" role="main">
       {messages.length === 0 && (
         <div className="chat-welcome" aria-hidden="true">
-          <div className="chip">Early Preview</div>
-          <h1>ChatGPT Clone</h1>
-          <p>Ask anything. Paste text, brainstorm ideas, or get quick explanations. Your chats stay in the sidebar so you can pick up where you left off.</p>
+          <div className="chip">ChaturChokro Nu Prarambh</div>
+          <h1>ChaturChokro</h1>
+          <p>Poochho kai pan. Paste karo, vichar karo, ke jald samjuti lo. Tamaru chat sidebar ma rahe che, etle tame jetla vaar ichho tetla vaar vapas aavi shako.</p>
         </div>
       )}
       <ChatMessages messages={messages} isSending={isSending} />

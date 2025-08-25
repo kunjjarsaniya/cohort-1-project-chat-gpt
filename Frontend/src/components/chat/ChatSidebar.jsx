@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ChatSidebar.css';
+import EditProfileModal from './EditProfileModal.jsx';
 
 
 const ChatSidebar = ({ chats, activeChatId, onSelectChat, onNewChat, open }) => {
+  const [ showProfile, setShowProfile ] = useState(false);
 
-
-  
   return (
     <aside className={"chat-sidebar " + (open ? 'open' : '')} aria-label="Previous chats">
       <div className="sidebar-header">
@@ -24,6 +24,22 @@ const ChatSidebar = ({ chats, activeChatId, onSelectChat, onNewChat, open }) => 
         ))}
         {chats.length === 0 && <p className="empty-hint">No chats yet.</p>}
       </nav>
+
+      <div className="sidebar-footer">
+        <button
+          className="profile-btn"
+          onClick={() => setShowProfile(true)}
+          aria-haspopup="dialog"
+          aria-expanded={showProfile ? 'true' : 'false'}
+        >
+          <span className="avatar" aria-hidden="true">👤</span>
+          <span className="label">View Profile</span>
+        </button>
+      </div>
+
+      {showProfile && (
+        <EditProfileModal onClose={() => setShowProfile(false)} />
+      )}
     </aside>
   );
 };

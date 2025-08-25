@@ -46,20 +46,14 @@
 }
 
 .msg-user .msg-bubble {
-    background: linear-gradient(180deg, #1f1f1f, #161616);
-    color: #fafafa;
-    border: 1px solid #2a2a2a;
+    background: var(--color-primary);
+    color: #ffffff;
+    border: 1px solid var(--color-primary);
 }
 
-.minimal .msg-user .msg-bubble {
-    background: #111;
-    border-color: #2a2a2a;
-}
+.minimal .msg-user .msg-bubble { background: var(--color-primary); border-color: var(--color-primary); }
 
-.msg-ai .msg-bubble {
-    background: #0d0d0d;
-    border-color: #1e1e1e;
-}
+.msg-ai .msg-bubble { background: var(--color-surface); border-color: var(--color-border); }
 
 .msg-ai.pending .msg-bubble {
     display: inline-flex;
@@ -91,26 +85,20 @@
 .msg-actions button {
     width: 30px;
     height: 30px;
-    background: #0d0d0d;
-    border: 1px solid #1e1e1e;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
     cursor: pointer;
-    color: #6a6a6a;
+    color: var(--color-text-muted);
     padding: 0;
 }
 
-.msg-actions button:hover {
-    background: #151515;
-    color: #ffffff;
-}
+.msg-actions button:hover { background: var(--color-surface); color: var(--color-text); }
 
-.msg-actions button:focus-visible {
-    outline: 2px solid #ffffff;
-    outline-offset: 2px;
-}
+.msg-actions button:focus-visible { outline: none; box-shadow: var(--color-focus-ring); }
 
 .msg-actions svg {
     width: 16px;
