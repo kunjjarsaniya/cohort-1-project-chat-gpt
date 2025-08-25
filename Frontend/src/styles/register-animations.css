@@ -1,0 +1,157 @@
+/* Modern Register Layout */
+.register-modern-bg {
+  min-height: 100dvh;
+  width: 100vw;
+  background: linear-gradient(120deg, #111 0%, #222 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+.register-modern-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  min-height: 540px;
+  gap: 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  border-radius: 24px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+.register-illustration {
+  flex: 1 1 0;
+  min-width: 320px;
+  background: #181818;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.register-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.1) brightness(0.8);
+}
+.register-glass-card {
+  flex: 1 1 0;
+  min-width: 340px;
+  background: rgba(24,24,24,0.85) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  border: 1.5px solid rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border-radius: 0 24px 24px 0;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+@media (max-width: 900px) {
+  .register-modern-container {
+    flex-direction: column;
+    min-height: unset;
+    max-width: 98vw;
+    border-radius: 24px;
+  }
+  .register-illustration, .register-glass-card {
+    min-width: 0;
+    border-radius: 24px 24px 0 0;
+  }
+}
+@media (max-width: 600px) {
+  .register-modern-container {
+    flex-direction: column;
+    min-height: unset;
+    max-width: 100vw;
+    border-radius: 0;
+    margin: 0;
+  }
+  .register-illustration, .register-glass-card {
+    border-radius: 0;
+    padding: 2rem 1rem;
+  }
+}
+/* Animations for Register Page */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.register-animate-card {
+  animation: fadeInUp 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.register-animate-header {
+  animation: fadeIn 1s 0.1s both;
+}
+
+.register-animate-form {
+  animation: fadeInUp 0.8s 0.2s both;
+}
+
+.register-animate-btn {
+  transition: transform 0.15s cubic-bezier(.4,0,.2,1), box-shadow 0.15s;
+}
+
+.register-animate-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+/* Black & White theme override for Register */
+:root {
+  --register-bw-bg: #111;
+  --register-bw-surface: #181818;
+  --register-bw-border: #333;
+  --register-bw-text: #fff;
+  --register-bw-muted: #bbb;
+  --register-bw-primary: #fff;
+  --register-bw-primary-hover: #e5e5e5;
+}
+
+body.bw-theme .auth-card {
+  background: var(--register-bw-surface) !important;
+  border-color: var(--register-bw-border) !important;
+  color: var(--register-bw-text) !important;
+}
+body.bw-theme .auth-header h1,
+body.bw-theme .auth-header,
+body.bw-theme .auth-alt {
+  color: var(--register-bw-text) !important;
+}
+body.bw-theme .auth-sub {
+  color: var(--register-bw-muted) !important;
+}
+body.bw-theme .auth-form input {
+  background: #222 !important;
+  color: var(--register-bw-text) !important;
+  border-color: var(--register-bw-border) !important;
+}
+body.bw-theme .auth-form label {
+  color: var(--register-bw-muted) !important;
+}
+body.bw-theme .primary-btn {
+  background: var(--register-bw-primary) !important;
+  color: #111 !important;
+  border-color: var(--register-bw-primary) !important;
+}
+body.bw-theme .primary-btn:hover {
+  background: var(--register-bw-primary-hover) !important;
+}

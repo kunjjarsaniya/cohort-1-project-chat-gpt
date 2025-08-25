@@ -1,3 +1,13 @@
+// Logout user
+export const logout = async () => {
+  try {
+    await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
+    setAuthToken(null);
+  } catch (error) {
+    console.error('Error logging out:', error);
+    throw error.response?.data?.message || 'Failed to logout';
+  }
+};
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api';

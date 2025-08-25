@@ -120,6 +120,7 @@ const ChatMessages = ({ messages, isSending, onRegenerate }) => {
       window.speechSynthesis.cancel();
       setSpeakingId(null);
     } else {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       const utter = new window.SpeechSynthesisUtterance(content);
       utter.onend = () => setSpeakingId(null);
       window.speechSynthesis.speak(utter);
@@ -168,7 +169,12 @@ const ChatMessages = ({ messages, isSending, onRegenerate }) => {
       return;
     }
     try {
-      const res = await regenerateMessage(m._id || m.id);
+      const msgId = m && (m._id || m.id);
+      if (!msgId) {
+        setActionMsg('Cannot regenerate: message id missing');
+        return;
+      }
+      const res = await regenerateMessage(msgId);
       if (res.data && res.data.newMessage) {
         setActionMsg("Response regenerated!");
       }
@@ -199,7 +205,7 @@ const ChatMessages = ({ messages, isSending, onRegenerate }) => {
       ))}
       {isSending && (
         <div className="msg msg-ai pending">
-          <div className="msg-role" aria-hidden="true">AI[ChaturChokro]</div>
+          <div className="msg-role" aria-hidden="true">Chatur Chokro</div>
           <div className="msg-bubble typing-dots" aria-label="AI is typing">
             <span/><span/><span/>
           </div>

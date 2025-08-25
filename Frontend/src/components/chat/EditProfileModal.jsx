@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile, updateProfile } from '../../services/api';
+import { getProfile, updateProfile, logout } from '../../services/api';
 import './ProfileModal.css';
 
 const ProfileModal = ({ onClose, onProfileUpdated }) => {
@@ -16,6 +16,10 @@ const ProfileModal = ({ onClose, onProfileUpdated }) => {
   });
   
   const [errors, setErrors] = useState({});
+
+
+  // Logout handler state (must be declared before any early returns)
+  const [loggingOut, setLoggingOut] = useState(false);
 
   // Load profile data
   useEffect(() => {
@@ -156,6 +160,21 @@ const ProfileModal = ({ onClose, onProfileUpdated }) => {
     return `${form.firstName.charAt(0)}${form.lastName.charAt(0)}`;
   };
 
+  // Logout handler
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    setError('');
+    try {
+      await logout();
+      window.location.href = '/login';
+    } catch (err) {
+      setError(err || 'Failed to logout.');
+      alert('Failed to logout');
+    } finally {
+      setLoggingOut(false);
+    }
+  };
+
   return (
     <div 
       className="modal-overlay" 
@@ -174,8 +193,8 @@ const ProfileModal = ({ onClose, onProfileUpdated }) => {
             className="modal-close" 
             onClick={onClose} 
             aria-label="Close profile"
-            disabled={saving}
-            aria-busy={saving ? 'true' : 'false'}
+            disabled={saving || loggingOut}
+            aria-busy={saving || loggingOut ? 'true' : 'false'}
           >
             <span aria-hidden="true">×</span>
           </button>
@@ -201,14 +220,25 @@ const ProfileModal = ({ onClose, onProfileUpdated }) => {
                 </p>
               </div>
             </div>
-            <div className="modal-actions">
+            <div className="modal-actions" style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
               <button 
                 type="button" 
-                className="btn primary .center-actions"
+                className="btn primary center-actions"
                 onClick={() => setMode('edit')}
                 aria-label="Edit profile"
+                disabled={loggingOut}
               >
                 Edit Profile
+              </button>
+              <button
+                type="button"
+                className="btn danger center-actions"
+                onClick={handleLogout}
+                disabled={loggingOut}
+                aria-label="Logout"
+                style={{ minWidth: 110 }}
+              >
+                {loggingOut ? 'Logging out...' : 'Logout'}
               </button>
             </div>
           </div>

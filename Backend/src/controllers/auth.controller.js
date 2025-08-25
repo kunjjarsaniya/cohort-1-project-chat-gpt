@@ -1,3 +1,9 @@
+// Logout user: clear auth cookie
+function logoutUser(req, res) {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logged out successfully" });
+}
+
 const userModel = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -80,5 +86,6 @@ async function loginUser(req, res) {
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }

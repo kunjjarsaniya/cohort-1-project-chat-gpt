@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ChatTitleModal from '../components/chat/ChatTitleModal.jsx';
 import { io } from "socket.io-client";
 import ChatMobileBar from '../components/chat/ChatMobileBar.jsx';
 import ChatSidebar from '../components/chat/ChatSidebar.jsx';
@@ -25,6 +26,8 @@ const Home = () => {
   const isSending = useSelector(state => state.chat.isSending);
   const [ sidebarOpen, setSidebarOpen ] = React.useState(false);
   const [ socket, setSocket ] = useState(null);
+  const [ showTitleModal, setShowTitleModal ] = useState(false);
+  const [ pendingNewChat, setPendingNewChat ] = useState(false);
 
   // Use server id shape consistently
   // const activeChat = chats.find(c => c._id === activeChatId) || null;
@@ -40,26 +43,29 @@ const Home = () => {
     // }
   ]);
 
-  const handleNewChat = async () => {
-    // Prompt user for title of new chat, fallback to 'New Chat'
-    let title = window.prompt('Enter a title for the new chat:', '');
-    if (title) title = title.trim();
-    if (!title) return
+  const handleNewChat = () => {
+    setShowTitleModal(true);
+  };
 
+  const handleTitleSubmit = async (title) => {
+    setPendingNewChat(true);
     try {
       const response = await axios.post("http://localhost:3000/api/chat", {
         title
       }, {
         withCredentials: true
-      })
+      });
       getMessages(response.data.chat._id);
       dispatch(startNewChat(response.data.chat));
       setSidebarOpen(false);
+      setShowTitleModal(false);
     } catch (err) {
       console.error('Failed to create chat', err);
       alert('Could not create chat. Please try again.');
+    } finally {
+      setPendingNewChat(false);
     }
-  }
+  };
 
   // Ensure at least one chat exists initially
   useEffect(() => {
@@ -211,6 +217,12 @@ return (
         onClick={() => setSidebarOpen(false)}
       />
     )}
+    <ChatTitleModal
+      isOpen={showTitleModal}
+      onSubmit={handleTitleSubmit}
+      onCancel={() => setShowTitleModal(false)}
+      pending={pendingNewChat}
+    />
   </div>
 );
 };

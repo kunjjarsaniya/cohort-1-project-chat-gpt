@@ -1,0 +1,117 @@
+
+/* Overlay animation */
+
+.chat-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInOverlay 0.32s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Modal animation */
+
+.chat-modal {
+  background: linear-gradient(135deg, #181818 60%, #232323 100%);
+  color: #f5f5f5;
+  padding: 2.2rem 2.7rem 2rem 2.7rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px 0 #000a, 0 1.5px 0 #2224;
+  min-width: 320px;
+  max-width: 92vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  animation: scaleInModal 0.36s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes scaleInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
+.chat-modal h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-shadow: 0 1px 0 #1118;
+}
+
+
+.chat-modal input[type="text"] {
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #444;
+  background: #111;
+  color: #fff;
+  font-size: 1.04rem;
+  outline: none;
+  margin-bottom: 0.2rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1.5px 0 #2228;
+}
+
+.chat-modal input[type="text"]:focus {
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 2px #fff2;
+}
+
+.chat-modal input[type="text"].error {
+  border: 1.5px solid #e74c3c;
+  box-shadow: 0 0 0 2px #e74c3c33;
+}
+
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.97rem;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.01em;
+}
+
+
+.chat-modal-actions {
+  display: flex;
+  gap: 1.1rem;
+  justify-content: flex-end;
+  margin-top: 0.2rem;
+}
+
+
+.ok-btn, .cancel-btn {
+  padding: 0.62rem 1.35rem;
+  border-radius: 8px;
+  border: 1.5px solid #444;
+  font-size: 1.01rem;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: #111;
+  color: #fff;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, border 0.18s;
+  box-shadow: 0 1.5px 0 #2228;
+}
+
+.ok-btn:hover, .ok-btn:focus, .cancel-btn:hover, .cancel-btn:focus {
+  background: #fff;
+  color: #111;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 2px #fff2;
+}

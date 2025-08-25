@@ -27,7 +27,7 @@ const ChatComposer = ({ input, setInput, onSend, isSending }) => {
           <textarea
             ref={textareaRef}
             className="composer-input"
-            placeholder="Message ChatGPT…"
+            placeholder="Message ChaturChokro…"
             aria-label="Message"
             value={input}
             onChange={e => setInput(e.target.value)}

@@ -1,3 +1,66 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    overflow-y: auto;
+    padding: 1rem;
+    background: var(--chat-bg, #181818);
+}
+
+.chat-message {
+    max-width: 70%;
+    padding: 0.75rem 1rem;
+    border-radius: 1.2rem;
+    background: #23272f;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    align-self: flex-start;
+    animation: fadeIn 0.4s;
+    outline: none;
+}
+.chat-message.own {
+    background: #2563eb;
+    color: #fff;
+    align-self: flex-end;
+}
+.chat-message.other {
+    background: #23272f;
+    color: #fff;
+    align-self: flex-start;
+}
+.chat-message-content {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    word-break: break-word;
+}
+.chat-message-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+.chat-message-sender {
+    font-weight: 500;
+}
+.chat-message-time {
+    margin-left: 0.5rem;
+}
+.loading {
+    text-align: center;
+    color: #888;
+    margin-top: 2rem;
+}
+.empty {
+    text-align: center;
+    color: #aaa;
+    margin-top: 2rem;
+}
 /* Container & flow */
 .messages {
     flex: 1;
