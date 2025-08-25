@@ -133,8 +133,10 @@ const Home = () => {
     try {
       const response = await axios.get(`http://localhost:3000/api/chat/messages/${chatId}`, { withCredentials: true })
       setMessages(response.data.messages.map(m => ({
+        ...m,
         type: m.role === 'user' ? 'user' : 'ai',
-        content: m.content
+        content: m.content,
+        timestamp: m.createdAt
       })));
     } catch (err) {
       console.error('Failed to fetch messages', err);
@@ -168,7 +170,31 @@ return (
           <p>Poochho kai pan. Paste karo, vichar karo, ke jald samjuti lo. Tamaru chat sidebar ma rahe che, etle tame jetla vaar ichho tetla vaar vapas aavi shako.</p>
         </div>
       )}
-      <ChatMessages messages={messages} isSending={isSending} />
+      <ChatMessages
+        messages={messages}
+        isSending={isSending}
+        onRegenerate={async (msg, idx) => {
+          try {
+            // Call backend to regenerate
+            const res = await import('../services/api').then(m => m.regenerateMessage(msg._id || msg.id));
+            if (res.data && res.data.newMessage) {
+              // Replace the message at idx with the new one
+              setMessages(prev => {
+                const newMsgs = [...prev];
+                newMsgs[idx] = {
+                  ...res.data.newMessage,
+                  type: res.data.newMessage.role === 'user' ? 'user' : 'ai',
+                  content: res.data.newMessage.content,
+                  timestamp: res.data.newMessage.createdAt
+                };
+                return newMsgs;
+              });
+            }
+          } catch (e) {
+            alert('Failed to regenerate message');
+          }
+        }}
+      />
       {
         activeChatId &&
         <ChatComposer

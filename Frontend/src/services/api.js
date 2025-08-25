@@ -39,4 +39,10 @@ const updateProfile = async (profileData) => {
   }
 };
 
+
+// Chat feedback and regenerate endpoints
+export const likeMessage = (id) => axios.post(`${API_URL}/chat/messages/${id}/like`, {}, { withCredentials: true });
+export const dislikeMessage = (id) => axios.post(`${API_URL}/chat/messages/${id}/dislike`, {}, { withCredentials: true });
+export const regenerateMessage = (id) => axios.post(`${API_URL}/chat/messages/${id}/regenerate`, {}, { withCredentials: true });
+
 export { setAuthToken, getProfile, updateProfile };

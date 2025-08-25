@@ -18,6 +18,14 @@ const messageSchema = new mongoose.Schema({
         type: String,
         enum: [ "user", "model", "system" ],
         default: "user"
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    dislikes: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true

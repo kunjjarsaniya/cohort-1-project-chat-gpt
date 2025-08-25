@@ -204,7 +204,7 @@ const ProfileModal = ({ onClose, onProfileUpdated }) => {
             <div className="modal-actions">
               <button 
                 type="button" 
-                className="btn primary"
+                className="btn primary .center-actions"
                 onClick={() => setMode('edit')}
                 aria-label="Edit profile"
               >
