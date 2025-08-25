@@ -7,6 +7,7 @@ const path = require('path');
 /* Routes */
 const authRoutes = require('./routes/auth.routes');
 const chatRoutes = require("./routes/chat.routes");
+const userRoutes = require("./routes/user.routes");
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 /* Using Routes */
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/users', userRoutes);
 
 
 app.get("*name", (req, res) => {
